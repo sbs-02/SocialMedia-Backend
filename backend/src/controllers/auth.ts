@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import User from "../models/User";
 import { generateToken } from "../utils/generateToken";
+import { toPublicUser } from "../utils/transformUser";
 
 const SALT_ROUNDS = 11;
 
@@ -36,12 +37,7 @@ export const register = async (req: Request, res: Response) => {
     const token = generateToken({ id: user._id });
 
     // Return safe user object
-    const safeUser = {
-      id: user._id,
-      fullName: user.fullName,
-      username: user.username,
-      email: user.email,
-    };
+    const safeUser = toPublicUser(user);
 
     return res.status(201).json({
       token,
@@ -66,15 +62,10 @@ export const login = async (req: Request, res: Response) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials." });
 
+    // after token creation
     const token = generateToken({ id: user._id });
-
-    const safeUser = {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-    };
+    const safeUser = toPublicUser(user);
     console.log("User Logged In.");
-
     return res.json({ token, user: safeUser });
   } catch (err) {
     console.error(err);

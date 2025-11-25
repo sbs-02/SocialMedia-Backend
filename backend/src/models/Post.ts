@@ -8,11 +8,11 @@ const PostSchema = new mongoose.Schema<IPost>(
       ref: "User",
       required: true,
     },
-    content: { type: String, required: true, unique: false },
+    content: { type: String, required: true, maxlength: 500 },
     image: { type: String, required: false, unique: false, default: "" },
     imagePublicId: { type: String, default: "" },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    commentCount: { types: Number },
+    commentCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

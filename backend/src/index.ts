@@ -23,6 +23,8 @@ app.get("/", (req, res) => {
   res.send("Hello from the server.");
 });
 
+console.log("Hello from the server.");
+
 //specify exactly which frontend URL is allowed
 app.use(
   cors({

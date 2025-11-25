@@ -1,6 +1,5 @@
 import express from "express";
 import { body } from "express-validator";
-
 import {
   createPost,
   getPost,
@@ -8,8 +7,10 @@ import {
   deletePost,
   getFeed,
   toggleLike,
+  addComment,
+  getComments,
+  deleteComment,
 } from "../controllers/post";
-
 import { auth } from "../middleware/auth";
 import {
   validateObjectId,
@@ -31,7 +32,9 @@ router.post(
     body("content")
       .optional()
       .isString()
-      .withMessage("content must be a string"),
+      .withMessage("content must be a string")
+      .isLength({ max: 500 })
+      .withMessage("content must be at most 500 characters"),
   ],
   createPost
 );
@@ -78,5 +81,15 @@ router.delete(
     Toggle like/unlike 
 */
 router.post("/:id/like", auth, validateObjectId("id"), toggleLike);
+
+router.post("/:id/comments", auth, validateObjectId("id"), addComment);
+router.get("/:id/comments", validateObjectId("id"), getComments);
+router.delete(
+  "/:postId/comments/:commentId",
+  auth,
+  validateObjectId("postId"),
+  validateObjectId("commentId"),
+  deleteComment
+);
 
 export default router;
