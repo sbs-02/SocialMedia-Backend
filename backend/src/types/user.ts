@@ -6,6 +6,8 @@ export interface IUser extends mongoose.Document {
   email: string;
   password: string;
   role: string;
+  avatar?: string;
+  avatarPublicId: { type: String; default: "" };
   followers?: mongoose.Types.ObjectId[] | IUserPublic[]; // raw or populated
   following?: mongoose.Types.ObjectId[] | IUserPublic[];
   createdAt?: Date;
@@ -17,6 +19,7 @@ export interface PopulatedUser {
   username: string;
   fullName?: string;
   avatar?: string;
+  avatarPublicId: { type: String; default: "" };
 }
 
 export interface PostWithUser {
@@ -37,6 +40,8 @@ export type IUserPublic = {
   username: string;
   email?: string;
   role?: string;
+  avatar?: string;
+  avatarPublicId: { type: String; default: "" };
   followers?: string[]; // array of user ids (strings)
   following?: string[]; // array of user ids (strings)
   createdAt?: string;
@@ -55,4 +60,6 @@ export type UpdateUserDTO = Partial<{
   username: string;
   email: string;
   password: string;
+  avatar: string;
+  avatarPublicId: { type: String; default: "" };
 }>;

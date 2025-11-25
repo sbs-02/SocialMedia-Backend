@@ -9,6 +9,7 @@ import {
   searchUsers,
   toggleFollow,
   updateUser,
+  updateAvatar,
 } from "../controllers/user";
 import { auth } from "../middleware/auth";
 
@@ -26,6 +27,9 @@ router.get("/:id/posts", getUserPosts);
 
 // Follow/unfollow: POST /api/users/:id/follow  (authenticated)
 router.post("/:id/follow", auth, toggleFollow);
+
+// PUT /api/users/:id/avatar
+router.put("/:id/avatar", auth, updateAvatar);
 
 // Now the dynamic user id routes (these are last)
 router.get("/:id", getUserById);
